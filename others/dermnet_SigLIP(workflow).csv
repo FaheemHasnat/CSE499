@@ -1,0 +1,11 @@
+Step,Description
+Model Setup,Loaded SigLIP model and processor using AutoModel and AutoProcessor
+Data Loading,Loaded Dermnet metadata and herb text files
+Dataset Preparation,Created SkinHerbDataset for image-text pairs
+Training,Fine tuned SigLIP using CosineEmbeddingLoss and AdamW optimizer
+Feature Extraction,Generated image and text embeddings using get_image_features and get_text_features
+Herb Encoding,Encoded all herb texts into embeddings
+Evaluation Pipeline,Computed similarity scores between image embeddings and herb embeddings
+Ranking,Selected top N herbs using similarity sorting
+Saving Results,Saved predictions into test_predictions.csv
+Visualization,Displayed test image and printed predicted herb list
