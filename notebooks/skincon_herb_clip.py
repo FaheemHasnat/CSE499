@@ -85,7 +85,7 @@ drive.mount('/content/drive', force_remount=True)
 # Base directory
 BASE_DIR = "/content/drive/MyDrive/499A Datasets"
 
-# ✅ Correct dataset paths (based on your confirmation)
+#  Correct dataset paths (based on your confirmation)
 HERB_FILE = os.path.join(BASE_DIR, "Preprocessed", "herb2_final_clean.csv")
 SKINCON_FILE = os.path.join(BASE_DIR, "Skincon", "preprocessed", "skincon_preprocessed.csv")
 IMAGE_FOLDER = os.path.join(BASE_DIR, "Skincon", "preprocessed", "images")
@@ -98,13 +98,12 @@ OUTPUT_DIR = os.path.join(BASE_DIR, "clip_results")
 Path(OUTPUT_DIR).mkdir(parents=True, exist_ok=True)
 
 # Verify all paths
-print("✅ Final Path Configuration Check:")
-print("=" * 80)
+print(" Final Path Configuration Check:")
+
 print(f"Herb CSV: {HERB_FILE} --> Exists: {os.path.exists(HERB_FILE)}")
 print(f"Skincon CSV: {SKINCON_FILE} --> Exists: {os.path.exists(SKINCON_FILE)}")
 print(f"Image Folder: {IMAGE_FOLDER} --> Exists: {os.path.exists(IMAGE_FOLDER)}")
 print(f"Output Directory: {OUTPUT_DIR} --> Exists: {os.path.exists(OUTPUT_DIR)}")
-print("=" * 80)
 
 """## 3. Load Datasets"""
 
@@ -112,11 +111,11 @@ print("=" * 80)
 print("Loading plant compound dataset...")
 try:
     herb_df = pd.read_csv(HERB_FILE, encoding='utf-8')
-    print(f"✓ Loaded herb dataset: {herb_df.shape[0]:,} rows x {herb_df.shape[1]} columns")
+    print(f" Loaded herb dataset: {herb_df.shape[0]:,} rows x {herb_df.shape[1]} columns")
 
     # Filter for SKIN-RELATED diseases ONLY
     if 'MeSH_disease_class' in herb_df.columns:
-        print("\n🔍 Filtering for SKIN-RELATED diseases only...")
+        print("\n Filtering for SKIN-RELATED diseases only...")
         herb_df = herb_df[
             herb_df['MeSH_disease_class'].str.contains('Skin and Connective Tissue Diseases',
                                                        case=False, na=False)
@@ -124,23 +123,23 @@ try:
         print(f"   After skin filter: {herb_df.shape[0]:,} rows (skin diseases only)")
 
 except Exception as e:
-    print(f"✗ Error loading herb dataset: {e}")
+    print(f" Error loading herb dataset: {e}")
     herb_df = None
 
 # Load skincon dataset
 print("\nLoading skin condition dataset...")
 try:
     skincon_df = pd.read_csv(SKINCON_FILE, encoding='utf-8')
-    print(f"✓ Loaded skincon dataset: {skincon_df.shape[0]:,} rows x {skincon_df.shape[1]} columns")
+    print(f" Loaded skincon dataset: {skincon_df.shape[0]:,} rows x {skincon_df.shape[1]} columns")
 except Exception as e:
-    print(f"✗ Error loading skincon dataset: {e}")
+    print(f" Error loading skincon dataset: {e}")
     skincon_df = None
 
 # Merge datasets on Disease_name == label (SKIN DISEASES ONLY)
 if herb_df is not None and skincon_df is not None:
-    print("\n" + "="*80)
-    print("🌿 MERGING HERB & SKINCON DATASETS (SKIN DISEASES ONLY)")
-    print("="*80)
+
+    print(" MERGING HERB & SKINCON DATASETS (SKIN DISEASES ONLY)")
+
 
     # Normalize for matching
     herb_df['disease_norm'] = herb_df['Disease_name'].str.lower().str.strip()
@@ -148,8 +147,8 @@ if herb_df is not None and skincon_df is not None:
 
     # Show unique skin diseases available
     skin_diseases = herb_df['Disease_name'].nunique()
-    print(f"📋 Unique SKIN diseases in herb dataset: {skin_diseases}")
-    print(f"📋 Unique labels in skincon dataset: {skincon_df['label'].nunique()}")
+    print(f" Unique SKIN diseases in herb dataset: {skin_diseases}")
+    print(f" Unique labels in skincon dataset: {skincon_df['label'].nunique()}")
 
     # Merge
     matched_df = skincon_df.merge(
@@ -171,7 +170,7 @@ if herb_df is not None and skincon_df is not None:
     # Clean up temp columns
     matched_df.drop(columns=['disease_norm', 'label_norm'], inplace=True)
 
-    print(f"\n✅ Match Results (SKIN DISEASES ONLY):")
+    print(f"\n Match Results (SKIN DISEASES ONLY):")
     print(f"   Original skincon rows: {skincon_df.shape[0]:,}")
     print(f"   Matched rows: {matched_df.shape[0]:,}")
     print(f"   Match rate: {(matched_df.shape[0] / skincon_df.shape[0] * 100):.1f}%")
@@ -180,15 +179,15 @@ if herb_df is not None and skincon_df is not None:
         # Save merged dataset
         matched_csv = os.path.join(BASE_DIR, "skincon_herb_matched_SKIN_ONLY.csv")
         matched_df.to_csv(matched_csv, index=False, encoding='utf-8')
-        print(f"\n💾 Saved to: skincon_herb_matched_SKIN_ONLY.csv")
+        print(f"\n Saved to: skincon_herb_matched_SKIN_ONLY.csv")
 
         # Show matched skin diseases
         matched_diseases = matched_df['Disease_Name'].nunique()
-        print(f"\n🎯 Matched {matched_diseases} unique SKIN diseases")
+        print(f"\n Matched {matched_diseases} unique SKIN diseases")
         print(f"   Examples: {', '.join(matched_df['Disease_Name'].unique()[:5])}")
 
         # Show new columns
-        print(f"\n📋 New Columns:")
+        print(f"\n New Columns:")
         print(f"   • Herb_Name: {matched_df['Herb_Name'].notna().sum():,} values")
         print(f"   • Herb_Function: {matched_df['Herb_Function'].notna().sum():,} values")
         print(f"   • Disease_Name: {matched_df['Disease_Name'].notna().sum():,} values")
@@ -198,11 +197,11 @@ if herb_df is not None and skincon_df is not None:
         # Use matched data going forward
         skincon_df = matched_df.copy()
     else:
-        print("\n⚠️ WARNING: No matches found! Check disease name alignment.")
+        print("\n WARNING: No matches found! Check disease name alignment.")
         skincon_df = None
 
 else:
-    print("\n✗ Failed to load datasets")
+    print("\n Failed to load datasets")
 
 """## 4. Explore Datasets"""
 
@@ -213,14 +212,14 @@ if herb_df is not None:
 
 if skincon_df is not None:
     print("SKINCON DATASET PREVIEW")
-    print("=" * 80)
+
     display(skincon_df.head())
 
 # Preview matched dataset with herb information
 if 'Herb_Name' in skincon_df.columns:
-    print("="*80)
-    print("🌿 MATCHED DATASET - Skin Conditions with Herb Info")
-    print("="*80)
+
+    print(" MATCHED DATASET - Skin Conditions with Herb Info")
+
 
     display_cols = ['label', 'Herb_Name', 'Herb_Function', 'Disease_Name', 'Disease_Alias_Name']
     available_cols = [c for c in display_cols if c in skincon_df.columns]
@@ -259,8 +258,8 @@ if skincon_df is not None and 'Herb_Name' in skincon_df.columns:
     print("Creating herb-based descriptions...")
     skincon_df['herb_description'] = skincon_df.apply(create_herb_description, axis=1)
 
-    print(f"✓ Created {len(skincon_df):,} descriptions")
-    print(f"\n📝 Samples:")
+    print(f" Created {len(skincon_df):,} descriptions")
+    print(f"\n Samples:")
     for i, desc in enumerate(skincon_df['herb_description'].head(3), 1):
         print(f"\n{i}. {desc[:180]}..." if len(desc) > 180 else f"\n{i}. {desc}")
 
@@ -270,7 +269,7 @@ import glob
 
 if skincon_df is not None and os.path.exists(IMAGE_FOLDER):
     print("Verifying image files (including subfolders)...")
-    print("=" * 80)
+
 
     # Try to find image filename column
     image_col = None
@@ -307,9 +306,9 @@ if skincon_df is not None and os.path.exists(IMAGE_FOLDER):
 
         if existing_images > 0:
             skincon_df = skincon_df[skincon_df['image_exists']].copy()
-            print(f"\n✅ Dataset filtered to {len(skincon_df):,} rows with existing images")
+            print(f"\n Dataset filtered to {len(skincon_df):,} rows with existing images")
         else:
-            print(f"\n❌ No matching images found in any subfolders under {IMAGE_FOLDER}")
+            print(f"\n No matching images found in any subfolders under {IMAGE_FOLDER}")
 else:
     if skincon_df is None:
         print("Skincon dataset not loaded")
@@ -321,7 +320,7 @@ else:
 MODEL_NAME = "openai/clip-vit-base-patch32"
 
 print(f"Loading CLIP model: {MODEL_NAME}")
-print("=" * 80)
+
 
 try:
     model = CLIPModel.from_pretrained(MODEL_NAME)
@@ -366,12 +365,12 @@ def encode_texts(texts: List[str], batch_size: int = 32) -> torch.Tensor:
 # Encode herb descriptions (SKIN diseases only)
 if skincon_df is not None and model is not None and 'herb_description' in skincon_df.columns:
     print("Encoding herb-based descriptions with CLIP (SKIN diseases)...")
-    print("="*80)
+
 
     herb_texts = skincon_df['herb_description'].tolist()
     herb_embeddings = encode_texts(herb_texts, batch_size=32)
 
-    print(f"\n✓ Encoded {len(herb_embeddings):,} herb descriptions")
+    print(f"\n Encoded {len(herb_embeddings):,} herb descriptions")
     print(f"  Embedding shape: {herb_embeddings.shape}")
     print(f"  All descriptions are for SKIN-related treatments")
 else:
@@ -401,7 +400,7 @@ for root, dirs, files in os.walk(dataset_dir):
         if file.lower().endswith(('.png', '.jpg', '.jpeg')):
             all_images.append(os.path.join(root, file))
 
-print(f"✅ Found {len(all_images)} image files in total.")
+print(f" Found {len(all_images)} image files in total.")
 
 # Split into 70% train and 30% test
 train_imgs, test_imgs = train_test_split(all_images, test_size=0.3, random_state=42)
@@ -500,18 +499,18 @@ else:
 
 if top_scores is not None and top_indices is not None and skincon_df is not None:
     print("="*80)
-    print("🌿 TOP-5 HERB MATCHES FOR SKIN CONDITIONS (SKIN DISEASES ONLY)")
+    print(" TOP-5 HERB MATCHES FOR SKIN CONDITIONS (SKIN DISEASES ONLY)")
     print("="*80)
 
     num_to_display = min(5, len(skincon_df))
 
     for img_idx in range(num_to_display):
         row = skincon_df.iloc[img_idx]
-        print(f"\n{'='*80}")
-        print(f"🖼️  Image #{img_idx + 1}: {row['label']}")
-        print(f"📁 File: {os.path.basename(row['image_path'])}")
+
+        print(f"  Image #{img_idx + 1}: {row['label']}")
+        print(f" File: {os.path.basename(row['image_path'])}")
         if 'Disease_Name' in row:
-            print(f"🏥 Skin Disease: {row['Disease_Name']}")
+            print(f" Skin Disease: {row['Disease_Name']}")
         print(f"{'='*80}")
 
         for rank, (score, herb_idx) in enumerate(zip(top_scores[img_idx], top_indices[img_idx]), 1):
@@ -521,15 +520,15 @@ if top_scores is not None and top_indices is not None and skincon_df is not None
             herb_func = matched_row.get('Herb_Function', 'N/A')
             disease = matched_row.get('Disease_Name', 'N/A')
 
-            print(f"\n  {rank}. 🌿 {herb_name}")
-            print(f"     📊 Similarity: {score.item():.4f}")
-            print(f"     💊 Function: {str(herb_func)[:100]}{'...' if len(str(herb_func)) > 100 else ''}")
-            print(f"     🎯 Treats: {disease}")
+            print(f"\n  {rank}.  {herb_name}")
+            print(f"      Similarity: {score.item():.4f}")
+            print(f"      Function: {str(herb_func)[:100]}{'...' if len(str(herb_func)) > 100 else ''}")
+            print(f"      Treats: {disease}")
 
     if len(skincon_df) > num_to_display:
         print(f"\n... and {len(skincon_df) - num_to_display} more skin condition images")
 else:
-    print("✗ Cannot display results - missing required data")
+    print(" Cannot display results - missing required data")
 
 """## 13. Save Results to CSV"""
 
@@ -648,56 +647,35 @@ else:
 """## 15. Summary Statistics"""
 
 if similarity_matrix is not None and top_scores is not None:
-    print("="*80)
-    print("📊 SUMMARY STATISTICS (SKIN DISEASES ONLY)")
-    print("="*80)
 
-    print(f"\n📋 Datasets:")
+    print(" SUMMARY STATISTICS (SKIN DISEASES ONLY)")
+
+
+    print(f"\n Datasets:")
     print(f"  - Plant compounds (SKIN diseases): {len(skincon_df):,}")
     print(f"  - Skin images processed: {len(skincon_df):,}")
     print(f"  - Total similarity computations: {len(skincon_df) * len(skincon_df):,}")
     print(f"  - Disease filter: 'Skin and Connective Tissue Diseases' ONLY")
 
-    print(f"\n📈 Similarity Scores:")
+    print(f"\n Similarity Scores:")
     print(f"  - Overall mean: {similarity_matrix.mean():.4f}")
     print(f"  - Overall std: {similarity_matrix.std():.4f}")
     print(f"  - Overall min: {similarity_matrix.min():.4f}")
     print(f"  - Overall max: {similarity_matrix.max():.4f}")
 
-    print(f"\n🎯 Top-5 Matches:")
+    print(f"\n Top-5 Matches:")
     print(f"  - Mean similarity of top-1 matches: {top_scores[:, 0].mean():.4f}")
     print(f"  - Mean similarity of top-5 matches: {top_scores[:, 4].mean():.4f}")
     print(f"  - Best match overall: {top_scores.max():.4f}")
 
     if 'Disease_Name' in skincon_df.columns:
         unique_diseases = skincon_df['Disease_Name'].nunique()
-        print(f"\n🏥 Disease Statistics:")
+        print(f"\n Disease Statistics:")
         print(f"  - Unique SKIN diseases matched: {unique_diseases}")
         print(f"  - Top 5 diseases: {', '.join(skincon_df['Disease_Name'].value_counts().head().index.tolist())}")
 
-    print("\n" + "="*80)
-    print("✅ CLIP MATCHING PIPELINE COMPLETED SUCCESSFULLY!")
-    print("🌿 All results are for SKIN-RELATED diseases ONLY")
-    print("="*80)
+
+    print(" CLIP MATCHING PIPELINE COMPLETED SUCCESSFULLY!")
+
 else:
-    print("✗ Cannot display summary - results not available")
-
-"""---
-
-## Notes
-
-### For Google Colab Users:
-1. **First time**: You'll need to authorize Google Drive access when mounting
-2. **Folder path**: The folder ID from the URL won't directly work - you need to navigate by folder name
-3. **Shared folders**: If the folder is shared with you (not in "My Drive"), it may be under "Shared with me" and require a different path
-
-### For Local Users:
-1. Download the CSV files from Google Drive manually
-2. Place them in your local project directory matching the structure:
-   - `data/preprocessed/herb2_final_clean.csv`
-   - `data/skincon/preprocessed/skincon_preprocessed.csv`
-3. Update `DRIVE_BASE` in cell 2 to point to your local data directory
-
-### Alternative: Google Drive API
-For programmatic access without Colab, you can use the Google Drive API with PyDrive or gdown libraries.
-"""
+    print(" Cannot display summary - results not available")
