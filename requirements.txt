@@ -1,0 +1,40 @@
+# Core Deep Learning Frameworks
+torch==2.1.0
+torchvision==0.16.0
+transformers==4.41.0
+
+# HuggingFace and Model Dependencies
+huggingface-hub==0.23.0
+tokenizers==0.19.1
+accelerate==0.30.0
+safetensors==0.4.3
+sentencepiece==0.2.0
+
+# Image Processing
+Pillow==10.3.0
+
+# Data Processing and Analysis
+pandas==2.2.0
+numpy==1.26.4
+
+# Machine Learning and Metrics
+scikit-learn==1.5.0
+scipy==1.13.0
+
+# Visualization
+matplotlib==3.8.4
+seaborn==0.13.2
+
+# Progress Bars
+tqdm==4.66.4
+
+# Jupyter Notebook Support
+jupyter==1.0.0
+ipykernel==6.29.4
+notebook==7.2.0
+
+# Environment Management
+python-dotenv==1.0.1
+
+# Utilities
+requests==2.32.3
