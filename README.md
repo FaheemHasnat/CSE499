@@ -78,7 +78,7 @@ This project leverages state-of-the-art vision-language models to create an inte
 ## Dataset
 
 ### Skin Condition Dataset
-- **Source**: Skincon preprocessed dataset
+- **Source**: Skincon preprocessed dataset and DermNet dataset
 - **Content**: Dermatological condition images with metadata
 - **Diseases Covered**: 36 unique skin and connective tissue diseases
 - **Total Samples**: 6,337 images
