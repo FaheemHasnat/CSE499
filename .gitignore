@@ -66,3 +66,7 @@ Thumbs.db
 logs/
 
 outputs/
+
+# Large result files
+result/*.csv
+result/*.MP4
