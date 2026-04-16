@@ -4,7 +4,7 @@
 
 This project implements multimodal deep learning models for recommending herbal treatments for skin diseases by analyzing skin condition images and matching them with traditional medicine compounds. The research explores two distinct approaches:
 
-1. **Baseline Supervised Model (CSE499B)**: A fine-tuned multimodal architecture using EfficientNetB0 for image encoding and TF-IDF for text encoding, achieving supervised multi-label prediction.
+1. **Baseline Supervised Model**: A fine-tuned multimodal architecture using EfficientNetB0 for image encoding and TF-IDF for text encoding, achieving supervised multi-label prediction.
 2. **Vision-Language Models**: Zero-shot and few-shot learning approaches using CLIP and BLIP-2 pre-trained models for cross-modal retrieval.
 
 ### Problem Statement
@@ -82,7 +82,7 @@ Skin diseases often require treatment with multiple therapeutic compounds/herbs.
 
 ---
 
-## Baseline Model Architecture (CSE499B)
+## Baseline Model Architecture
 
 ### Multimodal Fusion Design
 
@@ -177,7 +177,7 @@ Input: (Image, Compound Labels, Text Features)
 
 ## Key Research Contributions
 
-### Baseline Model (CSE499B)
+### Baseline Model
 - **Multimodal Fusion**: Early concatenation of image and text embeddings
 - **Extreme Sparsity Handling**: Custom class weighting for 99%+ zero labels
 - **Fine-tuned EfficientNetB0**: Optimized for dermatological image analysis
@@ -270,7 +270,7 @@ For detailed references, terminology, and citations, see:
 
 ## Contributors
 
-- **Emon Hossen** - University Project CSE499B
+- **Emon Hossen** - University Project CSE499A and CSE499B
 
 ---
 
