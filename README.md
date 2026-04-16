@@ -1,4 +1,4 @@
-# CSE499B - Herbal Treatment Recommendation System for Skin Diseases
+# Herbal Treatment Recommendation System for Skin Diseases
 
 ## Project Overview
 
@@ -276,6 +276,6 @@ For detailed references, terminology, and citations, see:
 
 ## Topic
 
-**Academic Research Project** - CSE499B Final Year Research  
+**Academic Research Project** - CSE499A, CSE499B Senior Design I and II  
 **Focus**: Vision-Language Models for Herbal Treatment Recommendations in Dermatology  
-**Institution**: Computer Science & Engineering Department
+**Institution**: ECE Department, North South University
